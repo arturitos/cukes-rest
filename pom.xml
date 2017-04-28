@@ -10,6 +10,7 @@
     <modules>
         <module>cukes-rest</module>
         <module>cukes-rest-loadrunner</module>
+        <module>cukes-rest-jmeter</module>
         <module>cukes-rest-sample</module>
     </modules>
 

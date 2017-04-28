@@ -79,6 +79,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>lv.ctco.cukesrest</groupId>
+            <artifactId>cukes-rest-jmeter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
