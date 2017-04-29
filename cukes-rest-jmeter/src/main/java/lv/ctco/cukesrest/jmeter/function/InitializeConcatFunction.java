@@ -3,7 +3,7 @@ package lv.ctco.cukesrest.jmeter.function;
 /*
 Utility C function that is used to concat 2 strings
  */
-public class InitializeConcatFunction implements LoadRunnerFunction {
+public class InitializeConcatFunction implements JMeterFunction {
 
     public String format() {
         return "char* concat(const char *s1, const char *s2)\n" +

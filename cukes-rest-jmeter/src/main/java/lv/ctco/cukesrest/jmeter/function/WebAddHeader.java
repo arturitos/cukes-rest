@@ -1,6 +1,6 @@
 package lv.ctco.cukesrest.jmeter.function;
 
-public class WebAddHeader implements LoadRunnerFunction {
+public class WebAddHeader implements JMeterFunction {
 
     private String name;
     private String value;

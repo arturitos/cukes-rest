@@ -5,14 +5,14 @@ import com.google.inject.Singleton;
 
 import lv.ctco.cukesrest.internal.AssertionFacade;
 import lv.ctco.cukesrest.internal.context.InflateContext;
-import lv.ctco.cukesrest.jmeter.function.LoadRunnerFunction;
+import lv.ctco.cukesrest.jmeter.function.JMeterFunction;
 
 @Singleton
 @InflateContext
-public class AssertionFacadeLoadRunnerImpl implements AssertionFacade {
+public class AssertionFacadeJMeterImpl implements AssertionFacade {
 
     @Inject
-    LoadRunnerFilter loadRunnerFilter;
+    JMeterFilter JMeterFilter;
 
     @Override
     public void bodyEqualTo(String body) {
@@ -51,7 +51,7 @@ public class AssertionFacadeLoadRunnerImpl implements AssertionFacade {
 
     @Override
     public void statusCodeIs(final int statusCode) {
-        this.loadRunnerFilter.getTrx().addFunction(new LoadRunnerFunction() {
+        this.JMeterFilter.getTrx().addFunction(new JMeterFunction() {
             @Override
             public String format() {
                 return "HttpRetCode = atoi(lr_eval_string(\"{httpcode}\"));\n\n" + "if (HttpRetCode == " + statusCode + "){\n"
@@ -73,7 +73,7 @@ public class AssertionFacadeLoadRunnerImpl implements AssertionFacade {
 
     @Override
     public void varAssignedFromHeader(final String varName, final String headerName) {
-        this.loadRunnerFilter.getTrx().addFunction(new LoadRunnerFunction() {
+        this.JMeterFilter.getTrx().addFunction(new JMeterFunction() {
             @Override
             public String format() {
                 return "SaveBoundedValue(\"" + varName + "\", lr_eval_string(\"{ResponseHeaders}\"), \"" + headerName + ": \", \"\\r\\n\");\n";
@@ -143,7 +143,7 @@ public class AssertionFacadeLoadRunnerImpl implements AssertionFacade {
 
     @Override
     public void varAssignedFromProperty(final String varName, final String property) {
-        this.loadRunnerFilter.getTrx().addFunction(new LoadRunnerFunction() {
+        this.JMeterFilter.getTrx().addFunction(new JMeterFunction() {
             @Override
             public String format() {
                 return "web_js_run(\n" +
@@ -160,7 +160,7 @@ public class AssertionFacadeLoadRunnerImpl implements AssertionFacade {
 
     @Override
     public void varAssignedFromBody(final String varName) {
-        this.loadRunnerFilter.getTrx().addFunction(new LoadRunnerFunction() {
+        this.JMeterFilter.getTrx().addFunction(new JMeterFunction() {
             @Override
             public String format() {
                 return "lr_set_string(\"" + varName + "\", lr_eval_string(\"{ResponseBody}\"));\n";

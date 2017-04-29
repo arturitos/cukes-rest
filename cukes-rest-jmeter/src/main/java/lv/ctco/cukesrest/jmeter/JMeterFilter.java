@@ -17,9 +17,8 @@ import lv.ctco.cukesrest.jmeter.function.InitializeConcatFunction;
 import lv.ctco.cukesrest.jmeter.function.InitializeGenerateRandomStringFunction;
 import lv.ctco.cukesrest.jmeter.function.InitializeGetUrlFunction;
 import lv.ctco.cukesrest.jmeter.function.InitializeSaveBoundedValueFunction;
-import lv.ctco.cukesrest.jmeter.function.LoadRunnerFunction;
+import lv.ctco.cukesrest.jmeter.function.JMeterFunction;
 import lv.ctco.cukesrest.jmeter.function.WebCustomRequest;
-import lv.ctco.cukesrest.loadrunner.function.*;
 import lv.ctco.cukesrest.jmeter.mapper.WebCustomRequestMapper;
 import org.mockito.Mockito;
 
@@ -29,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Singleton
-public class LoadRunnerFilter implements Filter {
+public class JMeterFilter implements Filter {
 
     @Inject
     WebCustomRequestMapper mapper;
@@ -37,18 +36,18 @@ public class LoadRunnerFilter implements Filter {
     @Inject
     GlobalWorldFacade globalWorldFacade;
 
-    private List<LoadRunnerFunction> initializationFunctions = Arrays.asList(
+    private List<JMeterFunction> initializationFunctions = Arrays.asList(
         new InitializeSaveBoundedValueFunction(),
         new InitializeGenerateRandomStringFunction(),
         new InitializeGetUrlFunction(),
         new InitializeConcatFunction()
     );
-    private LoadRunnerAction action;
-    private LoadRunnerTransaction trx;
+    private JMeterAction action;
+    private JMeterTransaction trx;
 
     @Before
     public void beforeScenario(Scenario scenario) {
-        createLoadRunnerTransaction(scenario.getName());
+        createJMeterTransaction(scenario.getName());
     }
 
     @Override
@@ -56,7 +55,7 @@ public class LoadRunnerFilter implements Filter {
                            FilterContext ctx) {
         WebCustomRequest request = mapper.map(requestSpec);
         trx.addFunction(request);
-        boolean blockRequests = globalWorldFacade.getBoolean(CukesOptions.LOADRUNNER_FILTER_BLOCKS_REQUESTS);
+        boolean blockRequests = globalWorldFacade.getBoolean(CukesOptions.JMETER_FILTER_BLOCKS_REQUESTS);
         if (blockRequests) {
             Response response = Mockito.mock(Response.class);
             Mockito.when(response.then()).thenReturn(Mockito.mock(ValidatableResponse.class));
@@ -65,16 +64,16 @@ public class LoadRunnerFilter implements Filter {
         return ctx.next(requestSpec, responseSpec);
     }
 
-    public void createLoadRunnerAction() {
-        action = new LoadRunnerAction();
+    public void createJMeterAction() {
+        action = new JMeterAction();
     }
 
-    public LoadRunnerTransaction getTrx() {
+    public JMeterTransaction getTrx() {
         return trx;
     }
 
-    public void createLoadRunnerTransaction(String name) {
-        trx = new LoadRunnerTransaction();
+    public void createJMeterTransaction(String name) {
+        trx = new JMeterTransaction();
         trx.setName(name);
         trx.setTrxFlag("transactionStatus");
         if (action != null) {
@@ -84,7 +83,7 @@ public class LoadRunnerFilter implements Filter {
 
     public void dump(OutputStream out) {
         try {
-            for (LoadRunnerFunction function : initializationFunctions) {
+            for (JMeterFunction function : initializationFunctions) {
                 out.write(function.format().getBytes());
             }
             if (action != null) out.write(action.format().getBytes());

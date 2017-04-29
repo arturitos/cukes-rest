@@ -15,9 +15,9 @@ import cucumber.runtime.model.CucumberFeature;
 import lv.ctco.cukesrest.di.SingletonObjectFactory;
 import lv.ctco.cukesrest.internal.AssertionFacade;
 import lv.ctco.cukesrest.internal.VariableFacade;
-import lv.ctco.cukesrest.jmeter.AssertionFacadeLoadRunnerImpl;
-import lv.ctco.cukesrest.jmeter.LoadRunnerFilter;
-import lv.ctco.cukesrest.jmeter.VariableFacadeLoadRunnerImpl;
+import lv.ctco.cukesrest.jmeter.AssertionFacadeJMeterImpl;
+import lv.ctco.cukesrest.jmeter.JMeterFilter;
+import lv.ctco.cukesrest.jmeter.VariableFacadeJMeterImpl;
 import org.junit.runner.Description;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
@@ -29,13 +29,13 @@ import java.util.List;
 
 import static lv.ctco.cukesrest.CukesOptions.ASSERTIONS_DISABLED;
 import static lv.ctco.cukesrest.CukesOptions.CONTEXT_INFLATING_ENABLED;
-import static lv.ctco.cukesrest.CukesOptions.LOADRUNNER_FILTER_BLOCKS_REQUESTS;
+import static lv.ctco.cukesrest.CukesOptions.JMETER_FILTER_BLOCKS_REQUESTS;
 
 public class CucumberJMeter extends ParentRunner<FeatureRunner> {
     private final JUnitReporter jUnitReporter;
     private final List<FeatureRunner> children = new ArrayList<FeatureRunner>();
     private final cucumber.runtime.Runtime runtime;
-    private final LoadRunnerFilter filter;
+    private final JMeterFilter filter;
 
     /**
      * Constructor called by JUnit.
@@ -49,11 +49,11 @@ public class CucumberJMeter extends ParentRunner<FeatureRunner> {
 
         System.setProperty(cukesProperty(CONTEXT_INFLATING_ENABLED), "false");
         System.setProperty(cukesProperty(ASSERTIONS_DISABLED), "true");
-        System.setProperty(cukesProperty(LOADRUNNER_FILTER_BLOCKS_REQUESTS), "true");
-        System.setProperty(AssertionFacade.ASSERTION_FACADE, AssertionFacadeLoadRunnerImpl.class.getCanonicalName());
-        System.setProperty(VariableFacade.VARIABLE_FACADE, VariableFacadeLoadRunnerImpl.class.getCanonicalName());
+        System.setProperty(cukesProperty(JMETER_FILTER_BLOCKS_REQUESTS), "true");
+        System.setProperty(AssertionFacade.ASSERTION_FACADE, AssertionFacadeJMeterImpl.class.getCanonicalName());
+        System.setProperty(VariableFacade.VARIABLE_FACADE, VariableFacadeJMeterImpl.class.getCanonicalName());
 
-        filter = SingletonObjectFactory.instance().getInstance(LoadRunnerFilter.class);
+        filter = SingletonObjectFactory.instance().getInstance(JMeterFilter.class);
 
         ClassLoader classLoader = clazz.getClassLoader();
         Assertions.assertNoCucumberAnnotatedMethods(clazz);
@@ -109,7 +109,7 @@ public class CucumberJMeter extends ParentRunner<FeatureRunner> {
 
     private void addChildren(List<CucumberFeature> cucumberFeatures) throws InitializationError {
         for (CucumberFeature cucumberFeature : cucumberFeatures) {
-            children.add(new LoadRunnerFeature(cucumberFeature, runtime, jUnitReporter, filter));
+            children.add(new JMeterFeature(cucumberFeature, runtime, jUnitReporter, filter));
         }
     }
 

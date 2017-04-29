@@ -30,6 +30,7 @@ public interface CukesOptions {
     String ASSERTIONS_DISABLED = "assertions_disabled";
 
     String LOADRUNNER_FILTER_BLOCKS_REQUESTS = "loadrunner_filter_blocks_requests";
+    String JMETER_FILTER_BLOCKS_REQUESTS = "jmeter_filter_blocks_requests";
 
     String GZIP_SUPPORT = "gzip_support";
 }

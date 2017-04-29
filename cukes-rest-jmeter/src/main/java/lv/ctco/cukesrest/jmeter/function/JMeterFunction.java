@@ -1,5 +1,5 @@
 package lv.ctco.cukesrest.jmeter.function;
 
-public interface LoadRunnerFunction {
+public interface JMeterFunction {
     String format();
 }

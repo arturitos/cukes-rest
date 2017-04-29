@@ -1,16 +1,16 @@
 package lv.ctco.cukesrest.jmeter;
 
-import lv.ctco.cukesrest.jmeter.function.LoadRunnerFunction;
-import lv.ctco.cukesrest.loadrunner.function.*;
-import org.apache.commons.lang3.*;
+import lv.ctco.cukesrest.jmeter.function.JMeterFunction;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class LoadRunnerTransaction {
+public class JMeterTransaction {
 
     private String name;
     private String trxFlag;
-    private List<LoadRunnerFunction> functions = new ArrayList<LoadRunnerFunction>();
+    private List<JMeterFunction> functions = new ArrayList<JMeterFunction>();
 
     public String getName() {
         return name;
@@ -28,15 +28,15 @@ public class LoadRunnerTransaction {
         this.trxFlag = trxFlag;
     }
 
-    public List<LoadRunnerFunction> getFunctions() {
+    public List<JMeterFunction> getFunctions() {
         return functions;
     }
 
-    public void addFunction(LoadRunnerFunction function) {
+    public void addFunction(JMeterFunction function) {
         functions.add(function);
     }
 
-    public void setFunctions(List<LoadRunnerFunction> functions) {
+    public void setFunctions(List<JMeterFunction> functions) {
         this.functions = functions;
     }
 
@@ -46,7 +46,7 @@ public class LoadRunnerTransaction {
                 .append("lr_think_time(1);\n\n")
                 .append("transactionStatus = LR_PASS;\n")
                 .append("lr_start_transaction(\"").append(escapedTransactionName).append("\");\n\n");
-        for (LoadRunnerFunction function : functions) {
+        for (JMeterFunction function : functions) {
             result.append(function.format());
         }
         return result.append("lr_end_transaction(\"").append(escapedTransactionName).append("\", ").append(trxFlag)

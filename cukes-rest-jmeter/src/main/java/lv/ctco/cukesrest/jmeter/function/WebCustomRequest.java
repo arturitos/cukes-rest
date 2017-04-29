@@ -4,7 +4,7 @@ import lv.ctco.cukesrest.internal.helpers.*;
 
 import java.util.*;
 
-public class WebCustomRequest implements LoadRunnerFunction {
+public class WebCustomRequest implements JMeterFunction {
     private String name;
     private String url;
     private String method;
@@ -12,7 +12,7 @@ public class WebCustomRequest implements LoadRunnerFunction {
     private String mode;
     private String body;
     private String snapshot;
-    private List<LoadRunnerFunction> beforeFunctions = new ArrayList<LoadRunnerFunction>();
+    private List<JMeterFunction> beforeFunctions = new ArrayList<JMeterFunction>();
 
     public String getName() {
         return name;
@@ -70,17 +70,17 @@ public class WebCustomRequest implements LoadRunnerFunction {
         this.snapshot = snapshot;
     }
 
-    public List<LoadRunnerFunction> getBeforeFunctions() {
+    public List<JMeterFunction> getBeforeFunctions() {
         return beforeFunctions;
     }
 
-    public void setBeforeFunctions(List<LoadRunnerFunction> beforeFunctions) {
+    public void setBeforeFunctions(List<JMeterFunction> beforeFunctions) {
         this.beforeFunctions = beforeFunctions;
     }
 
     public String format() {
         StringBuilder result = new StringBuilder();
-        for (LoadRunnerFunction function : beforeFunctions) {
+        for (JMeterFunction function : beforeFunctions) {
             result.append(function.format());
         }
         if (beforeFunctions.size() > 0) result.append("\n");

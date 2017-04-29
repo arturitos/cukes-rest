@@ -3,7 +3,7 @@ package lv.ctco.cukesrest.jmeter.function;
 /*
 Utility C function to generate random string of specified length
  */
-public class InitializeGenerateRandomStringFunction implements LoadRunnerFunction {
+public class InitializeGenerateRandomStringFunction implements JMeterFunction {
 
     @Override
     public String format() {

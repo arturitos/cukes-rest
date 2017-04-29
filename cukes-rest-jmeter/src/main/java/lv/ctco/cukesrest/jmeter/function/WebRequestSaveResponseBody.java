@@ -1,6 +1,6 @@
 package lv.ctco.cukesrest.jmeter.function;
 
-public class WebRequestSaveResponseBody implements LoadRunnerFunction {
+public class WebRequestSaveResponseBody implements JMeterFunction {
 
     @Override
     public String format() {

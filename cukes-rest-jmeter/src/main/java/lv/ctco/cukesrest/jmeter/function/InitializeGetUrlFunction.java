@@ -16,7 +16,7 @@ package lv.ctco.cukesrest.jmeter.function;
  However cukes-rest (together with RestAssured) with consider that GET request should be done to http://localhost:8080/{(resourceUri)}
  that might result in http://localhost:8080/http://localhost:8080/resource/12345 that is obviously wrong
  */
-public class InitializeGetUrlFunction implements LoadRunnerFunction {
+public class InitializeGetUrlFunction implements JMeterFunction {
 
     public String format() {
         return "char *getUrl(char *in) {\n" +

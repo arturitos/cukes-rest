@@ -1,4 +1,4 @@
-package lv.ctco.cukesrest.run.custom;
+package lv.ctco.cukesrest.run;
 
 import cucumber.api.CucumberOptions;
 import lv.ctco.cukesrest.jmeter.junit.CucumberJMeter;

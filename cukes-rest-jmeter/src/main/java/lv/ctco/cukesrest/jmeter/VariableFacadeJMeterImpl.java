@@ -4,18 +4,18 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lv.ctco.cukesrest.internal.VariableFacade;
 import lv.ctco.cukesrest.internal.context.InflateContext;
-import lv.ctco.cukesrest.jmeter.function.LoadRunnerFunction;
+import lv.ctco.cukesrest.jmeter.function.JMeterFunction;
 
 @Singleton
 @InflateContext
-public class VariableFacadeLoadRunnerImpl implements VariableFacade {
+public class VariableFacadeJMeterImpl implements VariableFacade {
 
     @Inject
-    LoadRunnerFilter loadRunnerFilter;
+    JMeterFilter jMeterFilter;
 
     @Override
     public void setVariable(final String name, final String value) {
-        loadRunnerFilter.getTrx().addFunction(new LoadRunnerFunction() {
+        jMeterFilter.getTrx().addFunction(new JMeterFunction() {
             @Override
             public String format() {
                 return "lr_set_string(\"" + name + "\", \"" + value + "\");\n";
@@ -25,7 +25,7 @@ public class VariableFacadeLoadRunnerImpl implements VariableFacade {
 
     @Override
     public void setUUIDToVariable(final String name) {
-        loadRunnerFilter.getTrx().addFunction(new LoadRunnerFunction() {
+        jMeterFilter.getTrx().addFunction(new JMeterFunction() {
             @Override
             public String format() {
                 return "random_Generator(\"" + name + "\", 32);\n";
@@ -35,7 +35,7 @@ public class VariableFacadeLoadRunnerImpl implements VariableFacade {
 
     @Override
     public void setCurrentTimestampToVariable(final String name) {
-        loadRunnerFilter.getTrx().addFunction(new LoadRunnerFunction() {
+        jMeterFilter.getTrx().addFunction(new JMeterFunction() {
             @Override
             public String format() {
                 return "lr_save_timestamp(\"" + name + "\", \"DIGITS=10\", LAST);";

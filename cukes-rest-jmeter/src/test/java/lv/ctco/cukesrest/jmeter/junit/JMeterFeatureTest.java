@@ -14,10 +14,10 @@ import static org.hamcrest.core.Is.is;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoadRunnerFeatureTest {
+public class JMeterFeatureTest {
 
     @InjectMocks
-    LoadRunnerFeature loadRunnerFeature;
+    JMeterFeature jMeterFeature;
 
     @Mock cucumber.runtime.Runtime runtime;
     @Mock CucumberFeature cukesFeature;
@@ -26,7 +26,7 @@ public class LoadRunnerFeatureTest {
     @Test
     public void shouldCheckFileNameGeneration() throws Exception {
         String filename = "My feature";
-        String refactoredName = loadRunnerFeature.createName(filename);
+        String refactoredName = jMeterFeature.createName(filename);
         assertThat(refactoredName, is("My_feature"));
     }
 

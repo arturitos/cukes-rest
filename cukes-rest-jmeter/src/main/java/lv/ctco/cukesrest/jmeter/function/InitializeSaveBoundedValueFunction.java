@@ -3,7 +3,7 @@ package lv.ctco.cukesrest.jmeter.function;
 /*
  Utility C function to save part of cInStr string (bounded by cLB and cRB) into LR parameter called cPName
  */
-public class InitializeSaveBoundedValueFunction implements LoadRunnerFunction {
+public class InitializeSaveBoundedValueFunction implements JMeterFunction {
 
     public String format() {
         return "char *SaveBoundedValue(const char *cPName, char *cInStr, char *cLB, char *cRB) {\n" +
