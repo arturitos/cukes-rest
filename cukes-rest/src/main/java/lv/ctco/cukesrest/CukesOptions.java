@@ -32,4 +32,5 @@ public interface CukesOptions {
     String LOADRUNNER_FILTER_BLOCKS_REQUESTS = "loadrunner_filter_blocks_requests";
 
     String GZIP_SUPPORT = "gzip_support";
+    String REQUEST_BODY_TEMPLATES_ENABLED = "request_body_templates_enabled";
 }

@@ -1,20 +1,24 @@
 package lv.ctco.cukesrest.internal;
 
 import com.google.common.base.Optional;
-import com.google.inject.*;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import lv.ctco.cukesrest.*;
-import lv.ctco.cukesrest.internal.context.*;
-import lv.ctco.cukesrest.internal.matchers.*;
-import lv.ctco.cukesrest.internal.switches.*;
+import lv.ctco.cukesrest.CukesOptions;
+import lv.ctco.cukesrest.CukesRestPlugin;
+import lv.ctco.cukesrest.internal.context.GlobalWorldFacade;
+import lv.ctco.cukesrest.internal.context.InflateContext;
+import lv.ctco.cukesrest.internal.matchers.AwaitConditionMatcher;
+import lv.ctco.cukesrest.internal.switches.ResponseWrapper;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
-import static com.jayway.awaitility.Awaitility.*;
+import static com.jayway.awaitility.Awaitility.with;
 
 @Singleton
 @InflateContext
@@ -22,6 +26,8 @@ public class ResponseFacade {
 
     @Inject
     RequestSpecificationFacade specification;
+    @Inject
+    TemplatingFacade templatingFacade;
     @Inject
     GlobalWorldFacade world;
     @Inject
@@ -83,10 +89,18 @@ public class ResponseFacade {
                     cukesRestPlugin.beforeRequest(requestSpec);
                 }
 
+                if (world.getBoolean(CukesOptions.REQUEST_BODY_TEMPLATES_ENABLED)) {
+                    String template = templatingFacade.getTemplate(requestSpec);
+                    String body = templatingFacade.processTemplate(template);
+                    requestSpec.body(body);
+                }
+
                 response = method.doRequest(requestSpec, url);
+
                 for (CukesRestPlugin cukesRestPlugin : pluginSet) {
                     cukesRestPlugin.afterRequest(response);
                 }
+
                 if (!filterEnabled) {
                     cacheHeaders(response);
                 }
